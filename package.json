@@ -3,6 +3,9 @@
   "version": "0.1.0",
   "description": "Vue generic component for working with paginated api resources, including search and ordering tools",
   "main": "vue-datagrid.js",
+  "browserify": {
+    "transform": ["vueify"]
+  },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
