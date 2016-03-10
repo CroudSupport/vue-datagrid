@@ -1,0 +1,31 @@
+{
+  "name": "vue-datagrid",
+  "version": "0.1.0",
+  "description": "Vue generic component for working with paginated api resources, including search and ordering tools",
+  "main": "vue-datagrid.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/CroudSupport/vue-datagrid.git"
+  },
+  "keywords": [
+    "vue",
+    "datagrid",
+    "datatable",
+    "api",
+    "resource",
+    "plugin"
+  ],
+  "author": "Brock Reece",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/CroudSupport/vue-datagrid/issues"
+  },
+  "homepage": "https://github.com/CroudSupport/vue-datagrid#readme",
+  "dependencies": {
+    "underscore": "^1.8.3",
+    "underscore.deep": "^0.5.1"
+  }
+}
