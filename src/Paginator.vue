@@ -1,25 +1,34 @@
 <template>
-    <div class="ui small pagination menu">
-        <a class="item" v-for="page in pageList">{{ page }}</a>
+    <div v-if="pages > 1" class="ui small pagination menu">
+        <span v-for="page in pageList">
+            <a v-if="page==current" class="active item" @click="setCurrent(page)">{{ page }}</a>
+            <a v-else class="item" @click="setCurrent(page)">{{ page }}</a>
+        </span>
     </div>
 </template>
 
 <script>
     export default {
         props: {
-            active: {},
             pages: {},
+            current: {},
         },
-        
+
         computed: {
             pageList() {
                 const pages = []
                 for (let i = 1; i <= this.pages; i++) {
-                    pages.push(i) 
+                    pages.push(i)
                 }
 
                 return pages
             },
-        },   
+        },
+
+        methods: {
+            setCurrent(page) {
+                this.current = page
+            },
+        },
     }
 </script>
