@@ -83,7 +83,9 @@
                 default: 5,
             },
             meta: {
-                default: {},
+                default() {
+                    return {}
+                },
             },
             beforeApiCall: {
                 type: Function,
