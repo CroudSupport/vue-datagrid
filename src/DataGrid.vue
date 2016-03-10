@@ -71,7 +71,6 @@
     export default {
         props: {
             rows: {},
-            meta: {},
             resource: {},
             headers: {},
             order: {
@@ -82,6 +81,9 @@
             },
             perPage: {
                 default: 5,
+            },
+            meta: {
+                default: {},
             },
             beforeApiCall: {
                 type: Function,
