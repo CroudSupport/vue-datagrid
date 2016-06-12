@@ -1,20 +1,19 @@
 <template>
     <div>
-        <div class="ui basic secondary segment">
-            <div class="ui two column grid">
-                <div class="ui column">
-                    <slot name="paginator">
+        <slot name="search">
+            <div class="ui basic secondary segment">
+                <div class="ui two column grid">
+                    <div class="ui column">
                         <paginator v-if="meta.pagination" :current.sync="current" :pages="meta.pagination.total_pages"></paginator>
-                    </slot>
-                </div>
-                <div class="ui right aligned column form">
-                    <div class="ui field">
-                        <input v-model="search" debounce="500" placeholder="Search...">
+                    </div>
+                    <div class="ui right aligned column form">
+                        <div class="ui field">
+                            <input v-model="search" debounce="500" placeholder="Search...">
+                        </div>
                     </div>
                 </div>
             </div>
-        </div>
-
+        </slot>
         <slot name="records">
             <span v-if="meta.pagination">Showing records {{ firstRecord }} - {{ lastRecord }} of {{ meta.pagination.total }}</span>
         </slot>
@@ -23,7 +22,7 @@
             <div class="ui vertical segment">
                 <div class="ui center aligned middle aligned equal width grid">
                     <div class="ui row">
-                        <div v-for="header in headers" class="ui column">
+                        <div v-for="header in headers" :class="className(header)">
                             <strong v-if="header.column" @click="setOrder(header.column)" class="ui header">
                                 <a>{{ header.label }}</a>
                                 <span v-if="order === header.column">
@@ -70,6 +69,10 @@
 
     export default {
         props: {
+            className: {
+                type: String,
+                default: ''
+            },
             rows: {},
             resource: {},
             headers: {},
@@ -95,12 +98,23 @@
                     }
                 },
             },
+            afterApiCall: {
+                type: Function,
+                default() {
+                    return function(response) {
+                        return response
+                    }
+                },
+            },
+            current: {
+                default: 1
+            },
+            search: ''
         },
 
         data() {
             return {
-                search: '',
-                current: 1,
+
                 loading: true,
             }
         },
@@ -110,6 +124,14 @@
         },
 
         methods: {
+            className(header) {
+                let classNames = ['column'];
+
+                if (header.className)
+                    classNames.push(header.className)
+
+                return classNames.join(' ')
+            },
             get() {
                 if (!this.beforeApiCall()) {
                     return
@@ -117,6 +139,8 @@
 
                 this.loading = true
                 this.resource.get(this.criteria).then((response) => {
+                    // manipulate response before setting to Vue
+                    this.afterApiCall(response)
                     this.$set('rows', response.data.data)
                     this.$set('meta', response.data.meta)
                     this.loading = false
@@ -175,6 +199,9 @@
             },
             search() {
                 this.current = 1
+            },
+            perPage() {
+                this.get()
             },
             criteria() {
                 this.get()

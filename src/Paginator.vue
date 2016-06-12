@@ -1,9 +1,11 @@
 <template>
-    <div v-if="pages > 1" class="ui small pagination menu">
-        <span v-for="page in pageList">
-            <a v-if="page==current" class="active item" @click="setCurrent(page)">{{ page }}</a>
-            <a v-else class="item" @click="setCurrent(page)">{{ page }}</a>
-        </span>
+    <div>
+        <div v-if="pages > 1" class="ui small pagination menu">
+            <span v-for="page in pageList">
+                <a v-if="page==current" class="active item" @click="setCurrent(page)">{{ page }}</a>
+                <a v-else class="item" @click="setCurrent(page)">{{ page }}</a>
+            </span>
+        </div>
     </div>
 </template>
 
