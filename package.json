@@ -1,6 +1,6 @@
 {
   "name": "vue-datagrid",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "Vue generic component for working with paginated api resources, including search and ordering tools",
   "main": "vue-datagrid.js",
   "browserify": {
