@@ -21,7 +21,7 @@
         <slot name="headers">
             <div class="ui vertical segment">
                 <div class="ui center aligned middle aligned equal width grid">
-                    <div class="ui row">
+                    <div class="ui row header">
                         <div v-for="header in headers" :class="className(header)">
                             <strong v-if="header.column" @click="setOrder(header.column)" class="ui header">
                                 <a>{{ header.label }}</a>
@@ -36,7 +36,6 @@
                 </div>
             </div>
         </slot>
-
         <div v-if="loading" class="ui very padded basic segment">
             <div class="ui active centered large inline text loader">Loading</div>
         </div>
@@ -62,6 +61,7 @@
 </template>
 
 <script>
+
     import Paginator from './Paginator.vue'
 
     const _ = require('underscore')
@@ -114,8 +114,8 @@
 
         data() {
             return {
+                loading: false,
 
-                loading: true,
             }
         },
 
@@ -133,6 +133,9 @@
                 return classNames.join(' ')
             },
             get() {
+
+                if (this.loading) return
+
                 if (!this.beforeApiCall()) {
                     return
                 }
@@ -140,10 +143,12 @@
                 this.loading = true
                 this.resource.get(this.criteria).then((response) => {
                     // manipulate response before setting to Vue
-                    this.afterApiCall(response)
                     this.$set('rows', response.data.data)
                     this.$set('meta', response.data.meta)
-                    this.loading = false
+                    this.afterApiCall(response)
+                    this.$nextTick(() => {
+                        this.loading = false
+                    })
                 })
             },
             setOrder(column) {
@@ -195,15 +200,18 @@
 
         watch: {
             resource(resource) {
+                if (this.loading) return;
                 this.get()
             },
             search() {
                 this.current = 1
             },
             perPage() {
+                if (this.loading) return;
                 this.get()
             },
             criteria() {
+                if (this.loading) return;
                 this.get()
             },
         },
